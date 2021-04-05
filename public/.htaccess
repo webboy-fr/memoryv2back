@@ -1,6 +1,10 @@
 # Disable directory browsing
 Options All -Indexes
 
+
+RewriteEngine On
+RewriteBase /
+
 # ----------------------------------------------------------------------
 # Rewrite engine
 # ----------------------------------------------------------------------

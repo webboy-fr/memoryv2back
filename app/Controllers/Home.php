@@ -167,14 +167,15 @@ class Home extends BaseController
 		public function scores($level = ''){
 			$gameModel = new \App\Models\GameModel();
 
-			$scores = $gameModel->select('player, time')
+			$scores = $gameModel->select('player, time')			
 			->where([
 				'level' => $level,
 				'player != ' => 'NULL'
 				])
-			->orderBy('time', 'ASC')
-			->limit(5)
-			->findAll();
+			->orderBy('time', 'ASC')			
+			->findAll(5);
+
+			
 
 			//Pas oublier de faire limite 3 ou autre chose
 			return $this->response->setJSON($scores);
