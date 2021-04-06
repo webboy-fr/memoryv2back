@@ -68,6 +68,9 @@ class Card{
 
 class Home extends BaseController
 {
+
+	
+
 	public function index()
 	{
 
