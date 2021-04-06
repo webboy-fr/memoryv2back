@@ -69,22 +69,9 @@ class Card{
 class Home extends BaseController
 {
 
-	
-
-	public function index()
-	{
-
-		
-	
-		//return $this->response->setJSON($data);
-	}
-
 	public function newGame(String $level = '0'){
 
-		//exit($level);
-
 		$seed = Grid::generate($level);
-
 		
 		$gameModel = new \App\Models\GameModel();
 		$gameModel->insert([
@@ -98,20 +85,16 @@ class Home extends BaseController
 		];
 
 
-		return $this->response->setJSON($response);
-
-		
+		return $this->response->setJSON($response);		
 	}
 
 		public function checkEven(){
-
+			
 			$gameModel = new \App\Models\GameModel();
 			$gameId = $this->request->getVar('gameId');
 			$game = $gameModel->find($gameId);
 			$selectedCards = $this->request->getVar('selectedCards');			
 			$seed = json_decode($game->seed);
-
-			//print_r($selectedCards);
 
 			//Récupère les deux cartes selectionnées par l'utilsateur
 			//TODO REFAIRE AVEC FONCTION NATIVE
