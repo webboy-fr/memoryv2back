@@ -45,5 +45,12 @@ class BaseController extends Controller
 		// Preload any models, libraries, etc, here.
 		//--------------------------------------------------------------------
 		// E.g.: $this->session = \Config\Services::session();
+
+		//CORS
+		header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+		header("Access-Control-Allow-Headers: Authorization, Content-Type");
+		header("Access-Control-Allow-Origin: *");
+		header('content-type: application/json; charset=utf-8');
+
 	}
 }
