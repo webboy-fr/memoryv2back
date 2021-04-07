@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 
-
+//TODO : mettre en lib
 class Grid{
 
 	private static $fruits = ['pomme', 'banane', 'orange', 'citronVert', 'cranberry', 'abricot', 'citron', 'fraise',
