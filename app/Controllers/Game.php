@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Controllers;
+use CodeIgniter\RESTful\ResourceController;
+use App\Models\GameModel;
 
 
-
+//TODO : mettre en lib
 class Grid{
 
 	private static $fruits = ['pomme', 'banane', 'orange', 'citronVert', 'cranberry', 'abricot', 'citron', 'fraise',
@@ -66,14 +68,24 @@ class Card{
 
 
 
-class Home extends BaseController
+class Game extends ResourceController
 {
 
-	public function newGame(String $level = '0'){
 
+	protected $modelName = 'App\Models\Game';
+    protected $format    = 'json';
+
+	public function __construct(){
+		
+	}
+
+
+	public function create(String $level = '0'){
+
+		
 		$seed = Grid::generate($level);
 		
-		$gameModel = new \App\Models\GameModel();
+		$gameModel = new GameModel();
 		$gameModel->insert([
 			'level' => $level,
 			'seed' => json_encode($seed)
@@ -85,12 +97,12 @@ class Home extends BaseController
 		];
 
 
-		return $this->response->setJSON($response);		
+		return $this->respond($response);		
 	}
 
-		public function checkEven(){
+		public function checkCardEven(){
 			
-			$gameModel = new \App\Models\GameModel();
+			$gameModel = new GameModel();
 			$gameId = $this->request->getVar('gameId');
 			$game = $gameModel->find($gameId);
 			$selectedCards = $this->request->getVar('selectedCards');			
@@ -130,12 +142,12 @@ class Home extends BaseController
 			$gameModel->update($gameId, ['seed' => json_encode($seed)]);
 
 			//Renvoit la nouvelle grille au front
-			return $this->response->setJSON($seed);
+			return $this->respond($seed);
 		}
 
 
-		public function save(){
-			$gameId = $this->request->getVar('gameId');
+		public function update($gameId = null){
+			//$gameId = $this->request->getVar('gameId');
 			$player = $this->request->getVar('player');
 			$time = $this->request->getVar('time');
 
@@ -146,25 +158,39 @@ class Home extends BaseController
 				'time' => $time
 				]);
 
-			return $this->response->setJSON(['ok']);
+			
+			
+			$response = [
+				'status'   => 200,
+				'error'    => null,
+				'messages' => [
+					'success' => 'La partie a bien été sauvée'
+				]
+			];
+			return $this->respond($response);
 
 		}
 
-		public function scores($level = ''){
-			$gameModel = new \App\Models\GameModel();
+		public function scores(){
+			$gameModel = new GameModel();
 
-			$scores = $gameModel->select('player, time')			
-			->where([
-				'level' => $level,
+			$scores = $gameModel->select('player, level, time')			
+			->where([				
 				'player != ' => 'NULL'
 				])
 			->orderBy('time', 'ASC')			
 			->findAll(5);
 
-			
+			$response = [];
+			$response[0] = [];
+			$response[1] = [];
+			$response[2] = [];
+			foreach($scores as $score){
+				$response[$score->level][] = $score;
+			}
 
 			//Pas oublier de faire limite 3 ou autre chose
-			return $this->response->setJSON($scores);
+			return $this->respond($response);
 		}
 
 
