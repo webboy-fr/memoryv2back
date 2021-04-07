@@ -18,11 +18,11 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Home');
-$routes->setDefaultMethod('index');
+//$routes->setDefaultController('Game');
+//$routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
-$routes->setAutoRoute(true);
+$routes->setAutoRoute(false);
 
 /*
  * --------------------------------------------------------------------
@@ -32,7 +32,28 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+//$routes->get('/', 'Home::index');
+
+
+//CORS
+header('Access-Control-Allow-Origin: http://localhost:8080');
+header("Access-Control-Allow-Methods: HEAD, GET, POST, PUT, PATCH, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
+header('Content-Type: application/json');
+
+//PREFLIGHT CROSSDOMAIN
+if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
+	header('Access-Control-Allow-Origin: *');
+	header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
+	header("HTTP/1.1 200 OK");
+	die();
+}
+
+
+$routes->get('game/create/(:num)', 'Game::create/$1');
+$routes->put('game/(:num)', 'Game::update/$1');
+$routes->post('game/checkCardEven', 'Game::checkCardEven');
+$routes->get('game/scores', 'Game::scores');
 
 /*
  * --------------------------------------------------------------------
