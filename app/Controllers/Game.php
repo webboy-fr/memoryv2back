@@ -75,9 +75,7 @@ class Game extends ResourceController
 	protected $modelName = 'App\Models\Game';
     protected $format    = 'json';
 
-	public function __construct(){
-		
-	}
+	
 
 
 	public function create(String $level = '0'){
@@ -146,8 +144,7 @@ class Game extends ResourceController
 		}
 
 
-		public function update($gameId = null){
-			//$gameId = $this->request->getVar('gameId');
+		public function update($gameId = null){			
 			$player = $this->request->getVar('player');
 			$time = $this->request->getVar('time');
 
@@ -170,6 +167,25 @@ class Game extends ResourceController
 			return $this->respond($response);
 
 		}
+
+		public function delete($gameId = null){			
+			
+			//Sauve le score
+			$gameModel = new GameModel();
+			$gameModel->delete($gameId);			
+			
+			$response = [
+				'status'   => 200,
+				'id' => $gameId,
+				'error'    => null,
+				'messages' => [
+					'success' => 'La partie a bien été supprimée'
+				]
+			];
+			return $this->respondDeleted($response);
+
+		}
+
 
 		public function scores(){
 			$gameModel = new GameModel();

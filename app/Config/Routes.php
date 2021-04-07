@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
 
 $routes->get('game/create/(:num)', 'Game::create/$1');
 $routes->put('game/(:num)', 'Game::update/$1');
+$routes->delete('game/(:num)', 'Game::delete/$1');
 $routes->post('game/checkCardEven', 'Game::checkCardEven');
 $routes->get('game/scores', 'Game::scores');
 
