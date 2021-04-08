@@ -36,26 +36,40 @@ $routes->setAutoRoute(false);
 
 
 
+
+
+
+//L'appli front n'est pas hébergé sur le même nom de domaine que l'appli back
+//Donc mise en place de headers permettant de gérer le cross origin
+
 //CORS
-header('Access-Control-Allow-Origin: '.env('app.client'));
-header("Access-Control-Allow-Methods: HEAD, GET, POST, PUT, PATCH, DELETE, OPTIONS");
+header('Access-Control-Allow-Origin: '.env('app.client')); //On autorise l'accès que au serveur du front
+header("Access-Control-Allow-Methods: HEAD, GET, POST, PUT, PATCH, DELETE, OPTIONS"); //On définit toutes les méthodes HTTP autorisées
 header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
 header('Content-Type: application/json');
 
 //PREFLIGHT CROSSDOMAIN
+//Les requetes CORS ont une première requete de test du navigateur, qui utilise la méthode HTTP OPTIONS
 if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
-	header('Access-Control-Allow-Origin: *');
+	header('Access-Control-Allow-Origin: *'); //oops TODO
 	header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
 	header("HTTP/1.1 200 OK");
 	die();
 }
 
 
-$routes->get('game/create/(:num)', 'Game::create/$1');
-$routes->put('game/(:num)', 'Game::update/$1');
-$routes->delete('game/(:num)', 'Game::delete/$1');
-$routes->post('game/checkCardEven', 'Game::checkCardEven');
-$routes->get('game/scores', 'Game::scores');
+//Définition des routes de l'api
+$routes->get('game/create/(:num)', 'Game::create/$1'); //Créer une partie (GET)
+$routes->put('game/(:num)', 'Game::update/$1'); //Enregistre une partie (PUT)
+$routes->delete('game/(:num)', 'Game::delete/$1'); //Supprime une partie (DELETE)
+$routes->post('game/checkCardEven', 'Game::checkCardEven'); //Check une paire (POST)
+$routes->get('game/scores', 'Game::scores'); //Récupère les scores (GET)
+
+
+
+
+
+
 
 /*
  * --------------------------------------------------------------------

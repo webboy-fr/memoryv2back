@@ -1,5 +1,8 @@
 <?php
 
+//Cette classe expose tout un tas de méthode standard pour interagir avec la DB (extend Model)
+//C'est cette classe qui me permet de faire les insert/update/find/findAll facilement
+
 namespace App\Models;
 
 use CodeIgniter\Model;
@@ -11,7 +14,7 @@ class GameModel extends Model
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
-	protected $returnType           = 'App\Entities\Game';
+	protected $returnType           = 'App\Entities\Game'; //Renverra automatiquement des objets Game
 	protected $useSoftDelete        = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = ['level', 'seed', 'player', 'time'];
